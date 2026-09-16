@@ -57,7 +57,7 @@
     .brand-lockup{display:flex;align-items:center;gap:12px}.podium{width:50px;height:50px;color:var(--header-text);flex:none}.share-tool{display:flex;align-items:center;gap:7px;border:1px solid var(--header-text);background:var(--header-text);color:var(--header);padding:9px 14px;border-radius:9px;font-weight:800;min-height:44px}.share-tool svg{width:19px;height:19px;flex:none}.share-tool:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
     .disclaimer{background:var(--panel2)}.disclaimer strong:first-child{color:var(--text)}.about{margin:17px 0 0!important;font-size:17px!important}.neutral{margin:11px 0 0!important;color:var(--teal)!important;font-size:16px!important;font-weight:800}.mode{min-height:124px}.mode span{font-size:17px}.modal-card .intro-assertion{color:var(--teal);font-weight:800}.modal-card .intro-assertion strong{color:inherit}
     .advanced-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.advanced-actions .link{border:1px solid var(--line-strong);border-radius:9px;padding:9px 13px}.advanced-actions .link.active{background:var(--panel2);border-color:var(--teal);color:var(--teal)}.blend-status{font-size:14px!important;color:var(--teal)!important;font-weight:800;margin:10px 0 0}.options.blend-mode .radio{border-radius:5px}.options.blend-mode .selected .radio{border-width:5px}.custom-label{display:block;margin-top:2px;font-size:15px;font-weight:800;color:var(--accent)}.custom textarea{font-weight:400}.custom-note{font-size:14px!important}.footer-actions{justify-content:flex-start}.footer-actions .btn.primary{order:0}.footer-actions #downloadBtn{order:1}.footer-actions #compareBtn{order:2}.footer-actions #extendBtn{order:3}.footer-actions #backToSurveyBtn{order:4}
-    .insights{display:grid;gap:10px;margin:18px 0 22px}.insight{background:var(--panel);border:1px solid var(--line-strong);border-right:5px solid var(--teal);border-radius:11px;padding:15px 17px}.insight b{display:block;color:var(--accent);font-family:'Varela Round',Rubik,Arial,sans-serif;margin-bottom:3px}.insight p{margin:0;color:var(--dim);font-size:16px}.insight-note{margin:0;color:var(--dim);font-size:14px}.full-manifesto{margin-top:20px;border:1px solid var(--line-strong);background:var(--panel);border-radius:12px;padding:0 18px}.full-manifesto summary{padding:17px 0;cursor:pointer;color:var(--accent);font-weight:800}.full-manifesto[open] summary{border-bottom:1px solid var(--line)}.full-manifesto .priorities{margin:18px 0}.full-manifesto .footer-actions{margin-bottom:20px}
+    .insights{display:grid;gap:10px;margin:18px 0 12px}.insight{background:var(--panel);border:1px solid var(--line-strong);border-right:5px solid var(--teal);border-radius:11px;padding:15px 17px}.insight b{display:block;color:var(--accent);font-family:'Varela Round',Rubik,Arial,sans-serif;margin-bottom:3px}.insight p{margin:0;color:var(--dim);font-size:16px}.insight small{display:block;color:var(--dim2);font-size:13px;margin-top:8px}.insight-note{margin:0;color:var(--dim);font-size:14px}.full-manifesto{margin-top:20px;border:1px solid var(--line-strong);background:var(--panel);border-radius:12px;padding:0 18px}.full-manifesto summary{padding:17px 0;cursor:pointer;color:var(--accent);font-weight:800}.full-manifesto[open] summary{border-bottom:1px solid var(--line)}.full-manifesto .priorities{margin:18px 0}.full-manifesto .footer-actions{margin-bottom:20px}
     @media(max-width:560px){.top{flex-wrap:wrap;gap:8px;padding-bottom:9px}.top-actions{width:100%;justify-content:flex-end}.podium{width:44px;height:44px}.share-tool{font-size:14px;padding:8px 10px}.custom textarea{font-size:16px}.footer-actions .btn{width:100%}}
     body,button,textarea,select{font-family:Rubik,Arial,sans-serif}
     .brand,.hero h1,.result h1,.question-head h1,.option-title,.mode strong,.statement h2,.priorities h2,.modal-card h2{font-family:'Varela Round',Rubik,Arial,sans-serif}
@@ -86,7 +86,7 @@
       <div class="advanced-actions"><button class="link" id="blendModeBtn" type="button">לשלב שני מתווים</button><button class="link" id="customModeBtn" type="button">לנסח עמדה משלי</button></div><p class="blend-status" id="blendStatus" aria-live="polite"></p><div class="custom hidden" id="customPanel"><label class="custom-label" for="customText">העמדה האישית שלך</label><p class="custom-note">הטקסט יופיע במצע בדיוק כפי שנכתב; הוא אינו הוראה למערכת.</p><textarea id="customText" placeholder="כתבו כאן את העמדה עצמה"></textarea></div>
       <div class="bottom"><button class="btn" id="prevBtn">הקודם</button><button class="link" id="openBtn">עוד לא גיבשתי עמדה</button><button class="btn primary" id="nextBtn">המשך</button></div>
     </section>
-    <section id="result" class="hidden result"><div class="eyebrow">המצע האישי שלי</div><h1>מה עולה מהמצע שלך?</h1><p class="result-intro">קריאה קצרה של הכיוונים שבחרת. זו פרשנות תמציתית, לא שיוך פוליטי ולא המלצת הצבעה.</p><div id="insights" class="insights"></div><p id="shortNote" class="short-note hidden"></p><div class="footer-actions"><button class="btn primary" id="shareBtn">הורדת כרטיס לשיתוף</button><button class="btn" id="downloadBtn">העתקת המצע המלא</button></div><details class="full-manifesto" id="fullManifesto"><summary>המצע המלא ועריכת כרטיס השיתוף</summary><div class="priorities"><h2>מה העדיפויות שלך?</h2><p>בחרו עד שלושה נושאים לכרטיס השיתוף. אחר כך אפשר לערוך את הנוסח המקוצר בכרטיס; המצע המלא לא ישתנה.</p><div id="priorities" class="priority-list"></div><div id="captions" class="caption-list"></div><label class="card-name" for="cardName">איזה שם יופיע בכרטיס? <input id="cardName" type="text" maxlength="28" autocomplete="off" placeholder="שם פרטי או שם מלא (לא חובה)"><small>אם משאירים ריק, יופיע ״המצע האישי שלי״. השם משמש רק ליצירת התמונה ולא נשלח לשרת.</small></label></div><div id="statements"></div><div class="footer-actions"><button class="btn" id="compareBtn">יצירת פרומפט להשוואת מצע</button><button class="btn" id="extendBtn">השלמת המסלול המלא</button><button class="btn" id="backToSurveyBtn">חזרה לשאלות</button></div></details></section>
+    <section id="result" class="hidden result"><div class="eyebrow">המצע האישי שלי</div><h1>מה עולה מהמצע שלך?</h1><p class="result-intro">קריאה קצרה של הדפוסים שעולים מהמתווים שנבחרו. זו פרשנות תמציתית, לא שיוך פוליטי ולא המלצת הצבעה.</p><div id="insights" class="insights"></div><p id="analysisNote" class="insight-note"></p><p id="shortNote" class="short-note hidden"></p><div class="footer-actions"><button class="btn primary" id="shareBtn">הורדת כרטיס לשיתוף</button><button class="btn" id="downloadBtn">העתקת המצע המלא</button></div><details class="full-manifesto" id="fullManifesto"><summary>המצע המלא ועריכת כרטיס השיתוף</summary><div class="priorities"><h2>מה העדיפויות שלך?</h2><p>בחרו עד שלושה נושאים לכרטיס השיתוף. אחר כך אפשר לערוך את הנוסח המקוצר בכרטיס; המצע המלא לא ישתנה.</p><div id="priorities" class="priority-list"></div><div id="captions" class="caption-list"></div><label class="card-name" for="cardName">איזה שם יופיע בכרטיס? <input id="cardName" type="text" maxlength="28" autocomplete="off" placeholder="שם פרטי או שם מלא (לא חובה)"><small>אם משאירים ריק, יופיע ״המצע האישי שלי״. השם משמש רק ליצירת התמונה ולא נשלח לשרת.</small></label></div><div id="statements"></div><div class="footer-actions"><button class="btn" id="compareBtn">יצירת פרומפט להשוואת מצע</button><button class="btn" id="extendBtn">השלמת המסלול המלא</button><button class="btn" id="backToSurveyBtn">חזרה לשאלות</button></div></details></section>
   </main>
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true"><div class="modal-card"><h2>לפני שמתחילים</h2><p class="intro-assertion">הכלי עצמאי וללא שיוך מפלגתי. אין מאחוריו מצע מפלגתי, והוא אינו ממליץ למי להצביע.</p><p>המתווים הם מסגרות כלליות שנוצרו בעזרת AI כסיכום ראשוני של רעיונות ומדיניות המופיעים בשיח הציבורי.</p><ul><li>סדר השאלות והמתווים מוגרל בכל שאלון חדש.</li><li>אפשר לחזור אחורה, לבחור שילוב או לנסח מתווה עצמאי.</li><li>התשובות אינן נשלחות לשרת ונמחקות ברענון הדף. כדי לשמור את המצע, העתיקו אותו בסיום ושמרו אותו אצלכם.</li></ul><div class="modal-actions"><button class="btn" id="closeModalBtn">חזרה</button><button class="btn primary" id="startBtn">מתחילים</button></div></div></div>
   <div id="toast" class="toast hidden" aria-live="polite"></div>
@@ -152,26 +152,60 @@
   function next(){const x=state.order[state.index],t=$('#customText').value.trim();if(t)state.answers[x.id]={custom:t};if(!state.answers[x.id]){toast('בחרו מתווה, כתבו משלכם, או השאירו את הנושא פתוח.');return}if(state.index<state.order.length-1){state.index++;render();window.scrollTo(0,0)}else showResult()}
   function prev(){if(state.index){state.index--;render();window.scrollTo(0,0)}else{$('#survey').classList.add('hidden');$('#home').classList.remove('hidden')}}
   function sentence(q,a){if(a.open)return 'הנושא עדיין פתוח מבחינתי.';if(a.custom)return a.custom;if(a.blend){const [first,second]=a.blend;return `הגישה שלי משלבת בין ${q.o[first][0]} לבין ${q.o[second][0]}. ${q.o[first][1]} בנוסף, ${q.o[second][1]}`}return `אני נוטה ל${q.o[a.option][0]}. ${q.o[a.option][1]}`}
-  function answerOption(id){const q=Q.find(item=>item.id===id),a=state.answers[id];return q&&a?.option!==undefined?a.option:null}
+  // המיפוי נועד רק לקריאה תמציתית של מתווים נבחרים, ולא לציון או לשיוך מפלגתי.
+  // ערך חיובי ושלילי מייצגים שני כיוונים לגיטימיים בכל ציר; היעדר ערך = לא מסיקים מהשאלה הזו.
+  const ANALYSIS_MAP={
+    EDU:[{publicRole:.8},{publicRole:.8},{publicRole:-.6},{implementation:-.35}],
+    COL:[{publicRole:-.8,implementation:.3},{publicRole:.7},{publicRole:.25},{implementation:-.45}],
+    HOU:[{publicRole:.35,implementation:.3},{publicRole:.55,implementation:.35},{publicRole:.9,implementation:.5},{publicRole:-.8}],
+    HEA:[{publicRole:.9,implementation:.3},{publicRole:-.8},{publicRole:.5,implementation:.2},{implementation:-.45}],
+    SAF:[{publicRole:.45,implementation:-.25},{publicRole:.55,implementation:-.25},{publicRole:.65,implementation:.15},{publicRole:.6,implementation:-.55}],
+    SER:[{publicRole:.55,civic:.2},{publicRole:-.35},{publicRole:.3,civic:.25},{civic:-.35}],
+    GOV:[{civic:.95,implementation:.2},{civic:-.95,implementation:.25},{civic:.5,implementation:-.2},{implementation:-.5}],
+    REL:[{civic:.45},{civic:.95,implementation:.5},{civic:-.45},{civic:-.95,implementation:.35}],
+    TRA:[{publicRole:.55,implementation:.35},{publicRole:.25,implementation:-.65},{publicRole:.65,implementation:.25},{publicRole:-.45,implementation:-.65}],
+    FOR:[{world:.4},{world:.25},{world:-.95,implementation:.25},{world:.95,implementation:.45}],
+    DIP:[{world:.9},{world:.55},{world:-.95},{world:.2}],
+    FIS:[{publicRole:.9,implementation:.25},{publicRole:.4,implementation:-.2},{publicRole:.6},{publicRole:-.85}],
+    INT:[{civic:.55,implementation:.25},{civic:-.2},{civic:.35}],
+    EQU:[{civic:.55,publicRole:.35},{civic:.45,publicRole:.7},{civic:-.45,publicRole:-.5},{civic:-.35}],
+    ENV:[{environment:.95,publicRole:.45},{environment:.7,publicRole:.35},{environment:.45,publicRole:-.3},{environment:-.7,publicRole:.45}],
+    OCT:[{civic:.85},{civic:.45},{civic:-.35},{civic:-.65}]
+  };
+  const AXES={
+    implementation:{min:2,positive:['נכונות לשינוי רחב','במתווים שנבחרו עולה העדפה לשינויים מקיפים יותר במבנה המערכת, גם כשנדרש מהלך מורכב.'],negative:['שינוי מעשי ומדורג','במתווים שנבחרו עולה העדפה לצעדים שאפשר לבחון, לתקן ולהרחיב לפי תוצאות.']},
+    publicRole:{min:2,positive:['מדינה פעילה ושירותים ציבוריים','במתווים שנבחרו יש משקל להשקעה ציבורית, לפיקוח ולמענה רחב דרך המדינה.'],negative:['תחרות, בחירה ואוטונומיה','במתווים שנבחרו יש משקל רב יותר לתחרות, לגמישות ולפתרונות שאינם נשענים בעיקר על המדינה.']},
+    civic:{min:2,positive:['זכויות, חלופות אזרחיות ומוסדות עצמאיים','במתווים שנבחרו יש משקל להגנה על זכויות, על אפשרויות אזרחיות ועל איזונים מול כוח שלטוני.'],negative:['הכרעת רוב ומסגרת ציבורית','במתווים שנבחרו יש משקל רחב יותר להכרעות של נבחרי ציבור ולמסגרת ציבורית משותפת.']},
+    world:{min:2,positive:['שיתופי פעולה ואופק מדיני','במתווים שנבחרו יש משקל לשיתופי פעולה, לקשרים בין־לאומיים ולשמירה על אפשרויות מדיניות.'],negative:['עצמאות פעולה ושליטה','במתווים שנבחרו יש משקל לעצמאות פעולה ולשמירה על שליטה גם במחיר חיכוך מדיני.']},
+    environment:{min:1,positive:['משקל מערכתי לסביבה ולאקלים','ביחס לסביבה, המתווה שנבחר נותן משקל לתכנון ארוך טווח או לשילוב שיקולים סביבתיים בהחלטות רחבות.'],negative:['התמקדות סביבתית מקומית','ביחס לסביבה, המתווה שנבחר מתמקד בעיקר בבעיות מקומיות ומוחשיות, ולא בהכרח ביעדי אקלים רחבים.']}
+  };
+  function valuesForAnswer(id,answer){
+    if(!answer||answer.open||answer.custom)return null;
+    const options=answer.blend||[answer.option];
+    const totals={};
+    options.forEach(index=>{const values=ANALYSIS_MAP[id]?.[index]||{};Object.entries(values).forEach(([axis,value])=>totals[axis]=(totals[axis]||0)+value/options.length)});
+    return totals;
+  }
   function buildInsights(){
-    const gradual=['SAF:3','TRA:1','GOV:2','GOV:3','FOR:0','DIP:0','ENV:0','HEA:3'],structural=['REL:1','GOV:1','FOR:2','HOU:3'];
-    const picks=state.order.map(q=>`${q.id}:${answerOption(q.id)}`).filter(x=>!x.endsWith(':null'));
-    const gradualScore=picks.filter(x=>gradual.includes(x)).length,structuralScore=picks.filter(x=>structural.includes(x)).length;
-    const publicChoices=['EDU:0','EDU:1','COL:1','HOU:2','HEA:0','SAF:0','SAF:2','SER:0','TRA:0'],marketChoices=['EDU:2','COL:0','HOU:3','HEA:1','TRA:3'];
-    const publicScore=picks.filter(x=>publicChoices.includes(x)).length,marketScore=picks.filter(x=>marketChoices.includes(x)).length;
-    const gov=answerOption('GOV'),rel=answerOption('REL');
-    const approach=gradualScore>=structuralScore?['שינוי מעשי ומדורג','עולה העדפה להתקדמות שאפשר למדוד, לתקן ולהרחיב לפי תוצאות.']:['שינוי מבני','עולה נכונות לשינויים רחבים יותר במבנה המערכת, גם כשהם דורשים מהלך מורכב.'];
-    const role=publicScore>=marketScore?['מדינה פעילה לצד בחירה','המצע נוטה לחיזוק שירותים, פיקוח או השקעה ציבורית, בלי לוותר בהכרח על גמישות ובחירה.']:['מרחב גדול יותר לבחירה ולשוק','המצע נוטה לתת משקל רב יותר לתחרות, לעצמאות וליכולת לבחור בין פתרונות.'];
-    let civic=['איזון בין מוסדות','עולה רצון בכללים ברורים ובאיזונים בין הרשויות, גם אם הכיוון המדויק משתנה מסוגיה לסוגיה.'];
-    if([0,2].includes(gov)||[0,1].includes(rel))civic=['חירויות אזרחיות ומוסדות עצמאיים','ניכר משקל להגנה על זכויות, על חלופות אזרחיות ועל בלמים מוסדיים.'];
-    if(gov===1&&rel===3)civic=['הכרעת רוב ומסגרת ציבורית','ניכר משקל רחב יותר להכרעות של נבחרי ציבור ולצביון ציבורי משותף.'];
-    return [approach,role,civic];
+    const totals=Object.fromEntries(Object.keys(AXES).map(axis=>[axis,{sum:0,count:0}]));
+    state.order.forEach(q=>{const values=valuesForAnswer(q.id,state.answers[q.id]);if(!values)return;Object.entries(values).forEach(([axis,value])=>{totals[axis].sum+=value;totals[axis].count++})});
+    const insights=Object.entries(AXES).map(([axis,config])=>{
+      const total=totals[axis],average=total.count?total.sum/total.count:0;
+      if(total.count<config.min||Math.abs(average)<.32)return null;
+      const selected=average>0?config.positive:config.negative;
+      return {title:selected[0],body:selected[1],count:total.count,score:Math.abs(average)*(1+.16*total.count)};
+    }).filter(Boolean).sort((a,b)=>b.score-a.score).slice(0,3);
+    return insights.length?insights:[{title:'תמונה רב־כיוונית',body:'המתווים שנבחרו אינם מצביעים על כיוון חד באחד הצירים. יש בהם שילוב של גישות, וזה לגמרי לגיטימי.',count:0}];
   }
   function showResult(scroll=true){
     $('#survey').classList.add('hidden');$('#result').classList.remove('hidden');
     $('#shortNote').classList.toggle('hidden',state.mode!=='short');
     $('#shortNote').textContent=state.mode==='short'?`זו טיוטה על ${state.order.length} נושאים בלבד. במסלול המלא יש עוד ${Q.length-state.order.length} שאלות, ובהן דיור, שירות, אקלים ובירור אירועי 7 באוקטובר.`:'';
-    $('#insights').replaceChildren(...buildInsights().map(([title,body])=>{const item=document.createElement('article'),heading=document.createElement('b'),text=document.createElement('p');item.className='insight';heading.textContent=title;text.textContent=body;item.append(heading,text);return item}));
+    const insights=buildInsights();
+    $('#insights').replaceChildren(...insights.map(({title,body,count})=>{const item=document.createElement('article'),heading=document.createElement('b'),text=document.createElement('p');item.className='insight';heading.textContent=title;text.textContent=body;item.append(heading,text);if(count){const evidence=document.createElement('small');evidence.textContent=`מבוסס על ${count} בחירות רלוונטיות`;item.append(evidence)}return item}));
+    const excluded=state.order.filter(q=>{const a=state.answers[q.id];return a?.open||a?.custom}).length;
+    const excludedTopics=excluded===1?'נושא אחד':excluded===2?'שני נושאים':`${excluded} נושאים`;
+    $('#analysisNote').textContent=excluded?`ב־${excludedTopics} נבחר ניסוח אישי או שהעמדה נשארה פתוחה, ולכן הם אינם נכללים בקריאה האוטומטית.`:'הקריאה מבוססת על המתווים שנבחרו בלבד; היא אינה דירוג או שיוך פוליטי.';
     $('#priorities').replaceChildren(...state.order.map(q=>{const b=document.createElement('button');b.className='priority'+(state.priorities.includes(q.id)?' selected':'');b.dataset.priority=q.id;b.setAttribute('aria-pressed',String(state.priorities.includes(q.id)));b.textContent=q.topic;return b}));
     $('#captions').replaceChildren(...state.priorities.map(id=>{const q=Q.find(item=>item.id===id),label=document.createElement('label'),t=document.createElement('textarea');label.textContent=`הנוסח בכרטיס: ${q.topic}`;t.dataset.caption=id;t.value=state.cardCaptions[id]??shortCaption(q,state.answers[id]);t.setAttribute('aria-label',`נוסח מקוצר לכרטיס בנושא ${q.topic}`);label.append(t);return label}));
     $('#statements').replaceChildren(...state.order.map(q=>{const a=state.answers[q.id],article=document.createElement('article'),status=document.createElement('span'),h=document.createElement('h2'),p=document.createElement('p');article.className='statement';status.className='status';status.textContent=a.open?'פתוח לבירור':a.custom?'ניסוח עצמאי':a.blend?'שילוב מתווים':'עמדה שנבחרה';h.textContent=q.topic;p.textContent=sentence(q,a);article.append(status,h,p);return article}));
