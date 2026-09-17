@@ -203,10 +203,13 @@ export default {
     if (reservation.threshold) ctx.waitUntil(sendUsageAlert(env, reservation));
 
     try {
-      // Use the binding's prompt shape rather than its OpenAI-compatible chat
-      // endpoint. This is the documented Worker-binding contract for this model.
       const result = await env.AI.run(MODEL, {
-        prompt: `${systemPrompt}\n\nהמצע האישי לניתוח:\n${manifesto}`,
+        // JSON Mode for this model is documented with chat messages. Its reply
+        // can arrive as an object (handled in parseInsight above).
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `המצע האישי לניתוח:\n${manifesto}` },
+        ],
         max_tokens: 650,
         temperature: 0.25,
         response_format: { type: 'json_object' },
