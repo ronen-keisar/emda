@@ -41,7 +41,7 @@ const systemPrompt = `את/ה עוזר/ת ניתוח ניטרלי לכלי הי�
 export class UsageCounter {
   private readonly sql: DurableObjectStorage['sql'];
 
-  constructor(private readonly state: DurableObjectState) {
+  constructor(state: DurableObjectState) {
     this.sql = state.storage.sql;
     this.sql.exec(`CREATE TABLE IF NOT EXISTS daily_usage (
       day TEXT PRIMARY KEY,
@@ -245,8 +245,8 @@ export default {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `המצע האישי לניתוח:\n${manifesto}` },
         ],
-        max_completion_tokens: 400,
-        reasoning_effort: 'low',
+        max_completion_tokens: 900,
+        reasoning_effort: null,
         chat_template_kwargs: { enable_thinking: false },
         temperature: 0.2,
       });
