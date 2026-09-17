@@ -136,9 +136,24 @@ function extractModelText(result: unknown): string {
   if (typeof result === 'string') return result;
   if (!result || typeof result !== 'object') throw new Error('empty_model_response');
   const record = result as Record<string, unknown>;
-  if (typeof record.response === 'string') return record.response;
-  const content = (record.choices as Array<{ message?: { content?: unknown } }> | undefined)?.[0]?.message?.content;
-  if (typeof content === 'string') return content;
+
+  const asText = (value: unknown): string | undefined => {
+    if (typeof value === 'string') return value;
+    if (!Array.isArray(value)) return undefined;
+    const text = value.map(part => {
+      if (typeof part === 'string') return part;
+      if (!part || typeof part !== 'object') return '';
+      const block = part as Record<string, unknown>;
+      return typeof block.text === 'string' ? block.text : typeof block.content === 'string' ? block.content : '';
+    }).join('');
+    return text || undefined;
+  };
+
+  const choice = Array.isArray(record.choices) ? record.choices[0] as Record<string, unknown> | undefined : undefined;
+  const message = choice?.message && typeof choice.message === 'object' ? choice.message as Record<string, unknown> : undefined;
+  const content = [record.response, message?.content, choice?.text, record.output_text]
+    .map(asText).find((value): value is string => Boolean(value));
+  if (content) return content;
   throw new Error('unreadable_model_response');
 }
 
@@ -232,6 +247,7 @@ export default {
         ],
         max_completion_tokens: 400,
         reasoning_effort: 'low',
+        chat_template_kwargs: { enable_thinking: false },
         temperature: 0.2,
       });
     } catch (error) {
