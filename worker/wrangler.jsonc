@@ -1,0 +1,29 @@
+{
+  "name": "emda-insights",
+  "account_id": "964e898305eefda95c431e2708c82d09",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-16",
+  "workers_dev": true,
+  "ai": {
+    "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "USAGE",
+        "class_name": "UsageCounter"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["UsageCounter"]
+    }
+  ],
+  "vars": {
+    "ALLOWED_ORIGIN": "https://ronen-keisar.github.io",
+    "DAILY_ANALYSIS_LIMIT": "60",
+    "PER_VISITOR_DAILY_LIMIT": "3"
+  }
+}
