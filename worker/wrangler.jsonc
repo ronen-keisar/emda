@@ -24,6 +24,6 @@
   "vars": {
     "ALLOWED_ORIGIN": "https://ronen-keisar.github.io",
     "DAILY_ANALYSIS_LIMIT": "60",
-      "PER_VISITOR_DAILY_LIMIT": "5"
+      "PER_VISITOR_DAILY_LIMIT": "8"
   }
 }

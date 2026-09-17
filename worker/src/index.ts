@@ -29,9 +29,8 @@ interface InsightResponse {
   caveat: string;
 }
 
-// The current FP8 variant is the Cloudflare-hosted replacement for the older
-// Llama 3.1 8B endpoint and supports multilingual chat inputs.
-const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
+// Cloudflare's latency-optimized multilingual Llama endpoint.
+const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 const MAX_MANIFESTO_CHARS = 12000;
 
 const systemPrompt = `את/ה עוזר/ת ניתוח ניטרלי לכלי הישראלי "עמדה". קבל/י מצע אישי שנבנה מבחירות מדיניות.
@@ -214,12 +213,7 @@ export default {
     let result: unknown;
     try {
       result = await env.AI.run(MODEL, {
-        // JSON Mode for this model is documented with chat messages. Its reply
-        // can arrive as an object (handled in parseInsight above).
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `המצע האישי לניתוח:\n${manifesto}` },
-        ],
+        prompt: `${systemPrompt}\n\nהמצע האישי לניתוח:\n${manifesto}`,
         max_tokens: 650,
         temperature: 0.25,
       });
