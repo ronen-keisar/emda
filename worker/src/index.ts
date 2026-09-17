@@ -29,8 +29,9 @@ interface InsightResponse {
   caveat: string;
 }
 
-// Cloudflare's latency-optimized multilingual Llama endpoint.
-const MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
+// This model is available in the account's Workers AI catalogue, supports
+// multilingual instruction following, and is modest enough for the beta quota.
+const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
 const MAX_MANIFESTO_CHARS = 12000;
 
 const systemPrompt = `את/ה עוזר/ת ניתוח ניטרלי לכלי הישראלי "עמדה". קבל/י מצע אישי שנבנה מבחירות מדיניות.
@@ -58,13 +59,21 @@ export class UsageCounter {
 
   async fetch(request: Request): Promise<Response> {
     if (request.method !== 'POST') return Response.json({ error: 'method_not_allowed' }, { status: 405 });
-    const { day, visitorHash, dailyLimit, visitorLimit } = await request.json() as {
-      day: string; visitorHash: string; dailyLimit: number; visitorLimit: number;
+    const { action = 'reserve', day, visitorHash, dailyLimit, visitorLimit } = await request.json() as {
+      action?: 'reserve' | 'release'; day: string; visitorHash: string; dailyLimit: number; visitorLimit: number;
     };
 
     // Retain only today's anonymous quota counters. No manifesto or answer text is written here.
     this.sql.exec('DELETE FROM visitor_usage WHERE day <> ?', day);
     this.sql.exec('DELETE FROM daily_usage WHERE day <> ?', day);
+
+    // An unavailable model or malformed response must not take a beta attempt
+    // away from the visitor. The counter records no answer text.
+    if (action === 'release') {
+      this.sql.exec('UPDATE daily_usage SET requests = MAX(requests - 1, 0) WHERE day = ?', day);
+      this.sql.exec('UPDATE visitor_usage SET requests = MAX(requests - 1, 0) WHERE day = ? AND visitor_hash = ?', day, visitorHash);
+      return Response.json({ allowed: true } satisfies UsageReservation);
+    }
 
     const daily = Array.from(this.sql.exec<{ requests: number; alerted_70: number; alerted_90: number }>(
       'SELECT requests, alerted_70, alerted_90 FROM daily_usage WHERE day = ?', day,
@@ -198,32 +207,43 @@ export default {
     }
 
     const counter = env.USAGE.get(env.USAGE.idFromName('emda-global-usage'));
+    const quota = {
+      day: utcDay(), visitorHash: await visitorHash(request, env),
+      dailyLimit: Number(env.DAILY_ANALYSIS_LIMIT) || 60,
+      visitorLimit: Number(env.PER_VISITOR_DAILY_LIMIT) || 3,
+    };
     const reservationResponse = await counter.fetch('https://usage.internal/reserve', {
       method: 'POST',
-      body: JSON.stringify({
-        day: utcDay(), visitorHash: await visitorHash(request, env),
-        dailyLimit: Number(env.DAILY_ANALYSIS_LIMIT) || 60,
-        visitorLimit: Number(env.PER_VISITOR_DAILY_LIMIT) || 3,
-      }),
+      body: JSON.stringify({ action: 'reserve', ...quota }),
     });
     const reservation = await reservationResponse.json() as UsageReservation;
     if (!reservation.allowed) return reply(request, env, { error: reservation.reason }, 429);
-    if (reservation.threshold) ctx.waitUntil(sendUsageAlert(env, reservation));
+
+    const releaseQuota = () => counter.fetch('https://usage.internal/release', {
+      method: 'POST', body: JSON.stringify({ action: 'release', ...quota }),
+    });
 
     let result: unknown;
     try {
       result = await env.AI.run(MODEL, {
-        prompt: `${systemPrompt}\n\nהמצע האישי לניתוח:\n${manifesto}`,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `המצע האישי לניתוח:\n${manifesto}` },
+        ],
         max_tokens: 650,
         temperature: 0.25,
       });
     } catch (error) {
+      await releaseQuota();
       console.error('inference_failed', error instanceof Error ? error.message : 'unknown');
       return reply(request, env, { error: 'analysis_unavailable', reason: diagnosticCode(error) }, 502);
     }
     try {
-      return reply(request, env, { analysis: parseInsight(result) });
+      const analysis = parseInsight(result);
+      if (reservation.threshold) ctx.waitUntil(sendUsageAlert(env, reservation));
+      return reply(request, env, { analysis });
     } catch (error) {
+      await releaseQuota();
       console.error('analysis_parse_failed', error instanceof Error ? error.message : 'unknown');
       return reply(request, env, { error: 'analysis_unavailable', reason: 'invalid_model_response' }, 502);
     }
