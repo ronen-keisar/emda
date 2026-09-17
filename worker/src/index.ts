@@ -159,6 +159,13 @@ function parseInsight(result: unknown): InsightResponse {
   };
 }
 
+function diagnosticCode(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : '';
+  if (message.includes('json mode')) return 'json_mode_unmet';
+  if (message.includes('model')) return 'model_request_failed';
+  return 'analysis_processing_failed';
+}
+
 async function sendUsageAlert(env: Env, reservation: UsageReservation): Promise<void> {
   if (!env.RESEND_API_KEY || !env.ALERT_EMAIL || !reservation.threshold || !reservation.total) return;
   const response = await fetch('https://api.resend.com/emails', {
@@ -202,8 +209,9 @@ export default {
     if (!reservation.allowed) return reply(request, env, { error: reservation.reason }, 429);
     if (reservation.threshold) ctx.waitUntil(sendUsageAlert(env, reservation));
 
+    let result: unknown;
     try {
-      const result = await env.AI.run(MODEL, {
+      result = await env.AI.run(MODEL, {
         // JSON Mode for this model is documented with chat messages. Its reply
         // can arrive as an object (handled in parseInsight above).
         messages: [
@@ -214,10 +222,15 @@ export default {
         temperature: 0.25,
         response_format: { type: 'json_object' },
       });
-      return reply(request, env, { analysis: parseInsight(result) });
     } catch (error) {
       console.error('inference_failed', error instanceof Error ? error.message : 'unknown');
-      return reply(request, env, { error: 'analysis_unavailable' }, 502);
+      return reply(request, env, { error: 'analysis_unavailable', reason: diagnosticCode(error) }, 502);
+    }
+    try {
+      return reply(request, env, { analysis: parseInsight(result) });
+    } catch (error) {
+      console.error('analysis_parse_failed', error instanceof Error ? error.message : 'unknown');
+      return reply(request, env, { error: 'analysis_unavailable', reason: 'invalid_model_response' }, 502);
     }
   },
 };
