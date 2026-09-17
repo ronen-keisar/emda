@@ -29,14 +29,14 @@ interface InsightResponse {
   caveat: string;
 }
 
-// This model is available in the account's Workers AI catalogue, supports
-// multilingual instruction following, and is modest enough for the beta quota.
-const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
+// A current Cloudflare-hosted multilingual model. It was verified in the
+// Workers AI Playground and stays comfortably within the free daily allowance.
+const MODEL = '@cf/zai-org/glm-4.7-flash';
 const MAX_MANIFESTO_CHARS = 12000;
 
 const systemPrompt = `את/ה עוזר/ת ניתוח ניטרלי לכלי הישראלי "עמדה". קבל/י מצע אישי שנבנה מבחירות מדיניות.
-החזר/י אך ורק JSON תקין בעברית, במבנה: {"title":"...","summary":"...","themes":[{"title":"...","text":"...","evidence":"..."}],"tensions":[{"title":"...","text":"..."}],"next_question":"...","caveat":"..."}.
-כללים: עד 3 themes, עד 2 tensions, וכל טקסט קצר וברור. הסתמך/י רק על המצע שהוזן. אל תייחס/י למפלגה, מחנה, אידאולוגיה או אישיות פוליטית; אל תמליץ/י למי להצביע; אל תאבחן/י את המשתמש/ת; אל תציג/י מסקנה כעובדה. evidence חייב לציין בחירה או נושא ממשי מן המצע. אם אין בסיס, אמור/י זאת בקצרה. המטרה היא להראות דפוסים, פשרות ושאלות להמשך בירור.`;
+החזר/י אך ורק JSON תקין בעברית, ללא Markdown, במבנה: {"title":"...","summary":"...","themes":[{"title":"...","text":"...","evidence":"..."}],"tensions":[{"title":"...","text":"..."}],"next_question":"...","caveat":"..."}.
+הפלט כולו חייב להיות קצר מאוד: summary עד 35 מילים; 1 או 2 themes בלבד, וכל text עד 20 מילים ו-evidence עד 12 מילים; 0 או 1 tensions בלבד עד 25 מילים; next_question ו-caveat עד 20 מילים כל אחד. הסתמך/י רק על המצע שהוזן. אל תייחס/י למפלגה, מחנה, אידאולוגיה או אישיות פוליטית; אל תמליץ/י למי להצביע; אל תאבחן/י את המשתמש/ת; אל תציג/י מסקנה כעובדה. evidence חייב לציין בחירה או נושא ממשי מן המצע. אם אין בסיס, אמור/י זאת בקצרה. המטרה היא להראות דפוסים, פשרות ושאלות להמשך בירור.`;
 
 export class UsageCounter {
   private readonly sql: DurableObjectStorage['sql'];
@@ -230,8 +230,9 @@ export default {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `המצע האישי לניתוח:\n${manifesto}` },
         ],
-        max_tokens: 650,
-        temperature: 0.25,
+        max_completion_tokens: 400,
+        reasoning_effort: 'low',
+        temperature: 0.2,
       });
     } catch (error) {
       await releaseQuota();
