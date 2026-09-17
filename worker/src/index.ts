@@ -29,7 +29,9 @@ interface InsightResponse {
   caveat: string;
 }
 
-const MODEL = '@cf/meta/llama-3.1-8b-instruct';
+// The current FP8 variant is the Cloudflare-hosted replacement for the older
+// Llama 3.1 8B endpoint and supports multilingual chat inputs.
+const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
 const MAX_MANIFESTO_CHARS = 12000;
 
 const systemPrompt = `את/ה עוזר/ת ניתוח ניטרלי לכלי הישראלי "עמדה". קבל/י מצע אישי שנבנה מבחירות מדיניות.
@@ -220,7 +222,6 @@ export default {
         ],
         max_tokens: 650,
         temperature: 0.25,
-        response_format: { type: 'json_object' },
       });
     } catch (error) {
       console.error('inference_failed', error instanceof Error ? error.message : 'unknown');
